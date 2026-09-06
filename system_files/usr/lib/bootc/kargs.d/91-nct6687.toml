@@ -1,0 +1,14 @@
+# Modulparameter fuer nct6687 ueber die Kernel-Kommandozeile.
+#
+# Warum nicht (nur) ueber /usr/lib/modprobe.d/nct6687.conf:
+# Das Modul liegt im initramfs und wird von dort geladen, bevor das
+# Root-Dateisystem verfuegbar ist - die modprobe.d aus /usr/lib wird dabei
+# nicht gelesen (im initramfs liegt nur nct6683_blacklist.conf). Der Kernel
+# merkt sich dagegen "modul.parameter="-Angaben von der Kommandozeile und
+# wendet sie an, egal wann und von wo das Modul geladen wird.
+#
+# msi_fan_brute_force: ohne diesen Parameter lehnt der Super-I/O auf MSI-Boards
+# jeden PWM-Schreibvorgang fuer die SYS_FAN-Header ab; die Gehaeuseluefter
+# bleiben ungeregelt. Siehe modprobe.d/nct6687.conf fuer Details.
+kargs = ["nct6687.force=1", "nct6687.msi_fan_brute_force=1"]
+match-architectures = ["x86_64"]
